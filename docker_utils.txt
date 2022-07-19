@@ -1,0 +1,31 @@
+docker run -d -p 8010:8010 -e "spring.cloud.config.uri=http://172.31.0.133:8012" kargopolov/sk-eureka-server
+
+docker pull adoptopenjdk/openjdk11
+
+sudo yum install docker
+sudo service docker start
+
+sudo usermod -a -G docker ec2-user
+
+docker login -u bibinz
+Samba2020
+
+docker run -d -p 8010:8010 bibinz/bbn-eureka-server
+docker run -d -p 8082:8082 -e "eureka.client.serviceUrl.defaultZone=http://3.109.148.87:8010/eureka" bibinz/bbn-spring-cloud-api-gateway
+docker run -d  -e "server.port=8083" -p 8083:8083 -e "eureka.client.serviceUrl.defaultZone=http://3.109.148.87:8010/eureka" bibinz/bbn-acc-management-api
+
+docker build --tag=acc-management-service --force-rm=true .
+
+docker tag  b34ce5f32903 bibinz/bbn-acc-management-api
+
+docker push bibinz/bbn-acc-management-api
+
+curl http://172.31.10.203:8083/accmgmt-ws/account/status/check
+
+curl http://65.1.165.255:8082/accmgmt-ws/account/status/check
+
+curl http://localhost:8082/accmgmt-ws/account/status/check
+
+docker run -it --name kafka-zkless -p 9092:9092 -e LOG_DIR=/tmp/logs quay.io/strimzi/kafka:latest-kafka-2.8.1-amd64 /bin/sh -c 'export CLUSTER_ID=$(bin/kafka-storage.sh random-uuid) && bin/kafka-storage.sh format -t $CLUSTER_ID -c config/kraft/server.properties && bin/kafka-server-start.sh config/kraft/server.properties'
+
+docker pull stacksimplify/dockerintro-springboot-helloworld-rest-api:1.0.0-RELEASE
